@@ -47,8 +47,9 @@ public class Jsweeper
 				super.setText("");
 				super.setIcon(mineImage);
 			}
+			else super.setText(Integer.toString(this.val));
 		}
-		public void incrementValue() { this.val++; }
+		public void incrementValue() { this.val++; super.setText(Integer.toString(this.val)); }
 		
 		public boolean isMine() { return val == MINE; }
 		public void setMine(boolean mine) { setValue(mine?MINE:0); }
@@ -114,8 +115,6 @@ public class Jsweeper
 				if( j>0 && cells[i][j-1].isMine() ) cells[i][j].incrementValue(); // left
 				if( i>0 && j>0 && cells[i-1][j-1].isMine() ) cells[i][j].incrementValue(); // above & left
 				if( i<(size[0]-1) && j>0 && cells[i+1][j-1].isMine() ) cells[i][j].incrementValue(); // down & left
-				
-				cells[i][j].setText(Integer.toString(cells[i][j].getValue()));
 			}
 		}
 		
