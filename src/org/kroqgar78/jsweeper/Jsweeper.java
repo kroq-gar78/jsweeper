@@ -2,6 +2,7 @@ package org.kroqgar78.jsweeper;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
@@ -45,6 +46,24 @@ public class Jsweeper
 		public void setValue(int val)
 		{
 			this.val = val;
+			super.setText("");
+			super.setIcon(null);
+		}
+		public void incrementValue()
+		{
+			if(isMine()) return; // don't do anything if it's a mine
+			this.val++;
+			//super.setText(Integer.toString(this.val));
+		}
+		
+		public boolean isMine() { return val == MINE; }
+		public void setMine(boolean mine) { setValue(mine?MINE:0); }
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
+			
 			if(val == MINE)
 			{
 				super.setText("");
@@ -55,21 +74,6 @@ public class Jsweeper
 				super.setText("");
 			}
 			else super.setText(Integer.toString(this.val));
-		}
-		public void incrementValue()
-		{
-			if(isMine()) return; // don't do anything if it's a mine
-			this.val++;
-			super.setText(Integer.toString(this.val));
-		}
-		
-		public boolean isMine() { return val == MINE; }
-		public void setMine(boolean mine) { setValue(mine?MINE:0); }
-		
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
 			setEnabled(false);
 		}
 		
@@ -138,21 +142,35 @@ public class Jsweeper
 			{
 				if(!cells[i][j].isMine()) continue;
 
-				// bump all cells' values around the mine; Cell.incrementValue() ignores command if cell is a mine
-				if( i<(size[0]-1) ) cells[i+1][j].incrementValue(); //  below
-				if( j<(size[0]-1) ) cells[i][j+1].incrementValue(); // right
-				if( i<(size[0]-1) && j<(size[0]-1) ) cells[i+1][j+1].incrementValue(); // below & right
-				if( i>0 ) cells[i-1][j].incrementValue(); // above
-				if( i>0 && j<(size[0]-1) ) cells[i-1][j+1].incrementValue(); // above & right 
-				if( j>0 ) cells[i][j-1].incrementValue(); // left
-				if( i>0 && j>0 ) cells[i-1][j-1].incrementValue(); // above & left
-				if( i<(size[0]-1) && j>0 ) cells[i+1][j-1].incrementValue(); // down & left
+				Cell[] adjCells = getAdjacentCells(i, j);
+				for( int k = 0; k < adjCells.length; k++ )
+				{
+					cells[adjCells[k].getPosition()[0]][adjCells[k].getPosition()[1]].incrementValue();
+				}
 			}
 		}
 	}
 	
+	public Cell[][] getCells() { return this.cells; }
+	
+	public Cell[] getAdjacentCells(int x, int y)
+	{
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>();
+		
+		if( x<(size[0]-1) ) cellTmp.add(cells[x+1][y]); //  below
+		if( y<(size[0]-1) ) cellTmp.add(cells[x][y+1]); // right
+		if( x<(size[0]-1) && y<(size[0]-1) ) cellTmp.add(cells[x+1][y+1]); // below & right
+		if( x>0 ) cellTmp.add(cells[x-1][y]); // above
+		if( x>0 && y<(size[0]-1) ) cellTmp.add(cells[x-1][y+1]); // above & right 
+		if( y>0 ) cellTmp.add(cells[x][y-1]); // left
+		if( x>0 && y>0 ) cellTmp.add(cells[x-1][y-1]); // above & left
+		if( x<(size[0]-1) && y>0 ) cellTmp.add(cells[x+1][y-1]); // down & left
+		
+		return cellTmp.toArray(new Cell[cellTmp.size()]);
+	}
+	
 	public static void main(String[] args)
 	{
-		inst = new Jsweeper(8,8, 10);
+		inst = new Jsweeper(8, 8, 10);
 	}
 }
