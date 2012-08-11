@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class Jsweeper
 {
+	public static ImageIcon mineImage = new ImageIcon("res/mine.png");
+	
 	public static class Cell extends JButton
 	{
 		public static final int MINE = -1;
@@ -15,7 +17,7 @@ public class Jsweeper
 			super();
 			this.x = x;
 			this.y = y;
-			this.val = this.val;
+			this.val = val;
 		}
 		public Cell(int x, int y)
 		{
@@ -37,11 +39,19 @@ public class Jsweeper
 		public void setPosition(int[] pos) { setPosition(pos[0], pos[1]); }
 		
 		public int getValue() { return this.val; }
-		public void setValue(int val) { this.val = val; }
+		public void setValue(int val)
+		{
+			this.val = val;
+			if(val == MINE)
+			{
+				super.setText("");
+				super.setIcon(mineImage);
+			}
+		}
 		public void incrementValue() { this.val++; }
 		
 		public boolean isMine() { return val == MINE; }
-		public void setMine(boolean mine) { this.val = (mine?MINE:0); }
+		public void setMine(boolean mine) { setValue(mine?MINE:0); }
 		
 		private int x, y;
 		private int val;
@@ -56,11 +66,9 @@ public class Jsweeper
 		int[] size = new int[] {8,8}; // dimensions of the field; rows by columns
 		contentPane.setLayout(new GridLayout(size[0], size[1]));
 		
-		ImageIcon mineImage = new ImageIcon("res/mine.png");
 		Random rand = new Random(new java.util.GregorianCalendar().getTimeInMillis());
 		
 		int numMines = 10;
-		int currentMines = 0;
 		//JButton[][] buttons = new JButton[size[0]][size[1]]; // position is (dist from top, dist from left)
 		//boolean[][] mines = new boolean[size[0]][size[1]];
 		Cell[][] cells = new Cell[size[0]][size[1]];
@@ -70,17 +78,27 @@ public class Jsweeper
 			for( int j = 0; j < cells[i].length; j++ )
 			{
 				cells[i][j] = new Cell(i, j);
-				
 				contentPane.add(cells[i][j]);
-				if(rand.nextBoolean()&&currentMines<numMines)
-				{
-					System.out.println("Placed mine at (" + i + "," + j + ")");
-					currentMines++;
-					cells[i][j].setMine(true);
-					cells[i][j].setIcon(mineImage);
-				}
 			}
 		}
+		
+		// place mines
+		for( int i = 0; i < numMines; i++ )
+		{
+			// keep generating random positions until it finds one that isn't a mine
+			int x, y;
+			do
+			{
+				x = rand.nextInt(cells.length);
+				y = rand.nextInt(cells[0].length);
+			}
+			while(cells[x][y].isMine());
+			
+			cells[x][y].setMine(true);
+			System.out.println("Placed mine at (" + x + "," + y + ")");
+		}
+		
+		// calculate values of the cells
 		for( int i = 0; i < cells.length; i++ )
 		{
 			for( int j = 0; j < cells[i].length; j++ )
