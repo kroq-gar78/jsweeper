@@ -10,7 +10,7 @@ public class Jsweeper
 {
 	public static ImageIcon mineImage = new ImageIcon("res/mine.png");
 	
-	public static class Cell extends JButton implements ActionListener
+	public static class Cell extends JButton implements MouseListener
 	{
 		public static final int EMPTY = 0;
 		public static final int MINE = -1;
@@ -22,7 +22,7 @@ public class Jsweeper
 			this.y = y;
 			this.val = val;
 			
-			super.addActionListener(this);
+			super.addMouseListener(this);
 		}
 		public Cell(int x, int y)
 		{
@@ -80,15 +80,35 @@ public class Jsweeper
 			else super.setText(Integer.toString(this.val));
 		}
 		
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
-			clickCell();
-		}
-		
 		private int x, y;
 		private int val;
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
+			if(arg0.getButton() == MouseEvent.BUTTON1) clickCell();
+			if(arg0.getButton() == MouseEvent.BUTTON3);
+		}
 	}
 	
 	static Jsweeper inst;
@@ -108,7 +128,7 @@ public class Jsweeper
 		size = new int[] {height,width}; // dimensions of the field; rows by columns
 		contentPane.setLayout(new GridLayout(size[0], size[1]));
 		
-		rand = new Random(new java.util.GregorianCalendar().getTimeInMillis());
+		rand = new Random(System.currentTimeMillis());
 		
 		this.numMines = numMines;
 		cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
@@ -117,7 +137,7 @@ public class Jsweeper
 			for( int j = 0; j < cells[i].length; j++ )
 			{
 				cells[i][j] = new Cell(i, j);
-				cells[i][j].setPreferredSize(new Dimension(48, 48));
+				cells[i][j].setPreferredSize(new Dimension(42, 32));
 				contentPane.add(cells[i][j]);
 			}
 		}
