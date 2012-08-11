@@ -77,31 +77,32 @@ public class Jsweeper
 		private int val;
 	}
 	
-	public static void main(String[] args)
+	static Jsweeper inst;
+	
+	private JFrame frame;
+	private int[] size;
+	private Cell[][] cells;
+	private Random rand;
+	private int numMines;
+	
+	public Jsweeper( int width, int height, int numMines )
 	{
-		JFrame frame = new JFrame("Jsweeper");
+		frame = new JFrame("Jsweeper");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container contentPane = frame.getContentPane();
-		int[] size = new int[] {8,8}; // dimensions of the field; rows by columns
+		size = new int[] {height,width}; // dimensions of the field; rows by columns
 		contentPane.setLayout(new GridLayout(size[0], size[1]));
 		
-		Random rand = new Random(new java.util.GregorianCalendar().getTimeInMillis());
+		rand = new Random(new java.util.GregorianCalendar().getTimeInMillis());
 		
-		int numMines = 10;
-		Cell[][] cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
+		this.numMines = numMines;
+		cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
 		for( int i = 0; i < cells.length; i++ )
 		{
 			for( int j = 0; j < cells[i].length; j++ )
 			{
 				cells[i][j] = new Cell(i, j);
-				/*cells[i][j].addActionListener( new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						cells[i][j].setEnabled(false);
-					}
-				});*/
 				contentPane.add(cells[i][j]);
 			}
 		}
@@ -122,13 +123,21 @@ public class Jsweeper
 			System.out.println("Placed mine at (" + x + "," + y + ")");
 		}
 		
+		this.recountCells();
+		
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	private void recountCells()
+	{
 		// calculate values of the cells by iterating through mines and incrementing values around them
 		for( int i = 0; i < cells.length; i++ )
 		{
 			for( int j = 0; j < cells[i].length; j++ )
 			{
 				if(!cells[i][j].isMine()) continue;
-				
+
 				// bump all cells' values around the mine; Cell.incrementValue() ignores command if cell is a mine
 				if( i<(size[0]-1) ) cells[i+1][j].incrementValue(); //  below
 				if( j<(size[0]-1) ) cells[i][j+1].incrementValue(); // right
@@ -140,8 +149,10 @@ public class Jsweeper
 				if( i<(size[0]-1) && j>0 ) cells[i+1][j-1].incrementValue(); // down & left
 			}
 		}
-		
-		frame.pack();
-		frame.setVisible(true);
+	}
+	
+	public static void main(String[] args)
+	{
+		inst = new Jsweeper(8,8, 10);
 	}
 }
