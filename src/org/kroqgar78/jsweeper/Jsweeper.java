@@ -9,6 +9,7 @@ import javax.swing.*;
 public class Jsweeper
 {
 	public static ImageIcon mineImage = new ImageIcon("res/mine.png");
+	public static ImageIcon flagImage = new ImageIcon("res/flag.png");
 	
 	public static class Cell extends JButton implements MouseListener
 	{
@@ -63,14 +64,15 @@ public class Jsweeper
 		public void clickCell()
 		{
 			setEnabled(false);
+			super.setIcon(null);
+			super.setText("");
+			clicked = true;
 			if(val == MINE)
 			{
-				super.setText("");
 				super.setIcon(mineImage);
 			}
 			else if(val == EMPTY)
 			{
-				super.setText("");
 				Cell[] adjCells = inst.getAdjacentCells(x, y);
 				for( int i = 0; i < adjCells.length; i++ )
 				{
@@ -80,8 +82,10 @@ public class Jsweeper
 			else super.setText(Integer.toString(this.val));
 		}
 		
-		private int x, y;
-		private int val;
+		public void flagCell()
+		{
+			super.setIcon(flagImage);
+		}
 
 		@Override
 		public void mouseClicked(MouseEvent arg0)
@@ -102,19 +106,25 @@ public class Jsweeper
 		@Override
 		public void mousePressed(MouseEvent arg0)
 		{
-			// TODO Auto-generated method stub
-			
+			//getModel().setArmed(true);
+			//getModel().setPressed(true);
 		}
 		@Override
 		public void mouseReleased(MouseEvent arg0)
 		{
+			//getModel().setArmed(false);
+			//getModel().setPressed(false);
 			if(!containsMouse) return;
-			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
+			System.out.println(clicked);
+			System.out.println("Button pressed at (" + x + "," + y + ")" );
 			if(arg0.getButton() == MouseEvent.BUTTON1) clickCell();
-			if(arg0.getButton() == MouseEvent.BUTTON3);
+			if(arg0.getButton() == MouseEvent.BUTTON3 && !clicked) flagCell();
+			System.out.println(clicked);
 		}
 		
-		private boolean containsMouse = false;
+		private boolean containsMouse, clicked = false;
+		private int x, y;
+		private int val;
 	}
 	
 	static Jsweeper inst;
