@@ -84,31 +84,37 @@ public class Jsweeper
 		private int val;
 
 		@Override
-		public void mouseClicked(MouseEvent arg0) {
+		public void mouseClicked(MouseEvent arg0)
+		{
 			// TODO Auto-generated method stub
 			
 		}
 		@Override
-		public void mouseEntered(MouseEvent arg0) {
+		public void mouseEntered(MouseEvent arg0)
+		{
+			containsMouse = true;
+		}
+		@Override
+		public void mouseExited(MouseEvent arg0)
+		{
+			containsMouse = false;
+		}
+		@Override
+		public void mousePressed(MouseEvent arg0)
+		{
 			// TODO Auto-generated method stub
 			
 		}
 		@Override
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
+		public void mouseReleased(MouseEvent arg0)
+		{
+			if(!containsMouse) return;
 			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
 			if(arg0.getButton() == MouseEvent.BUTTON1) clickCell();
 			if(arg0.getButton() == MouseEvent.BUTTON3);
 		}
+		
+		private boolean containsMouse = false;
 	}
 	
 	static Jsweeper inst;
