@@ -9,7 +9,7 @@ public class Jsweeper
 {
 	public static ImageIcon mineImage = new ImageIcon("res/mine.png");
 	
-	public static class Cell extends JButton
+	public static class Cell extends JButton implements ActionListener
 	{
 		public static final int MINE = -1;
 		
@@ -20,15 +20,7 @@ public class Jsweeper
 			this.y = y;
 			this.val = val;
 			
-			super.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
-					setEnabled(false);
-				}
-			});
+			super.addActionListener(this);
 		}
 		public Cell(int x, int y)
 		{
@@ -58,6 +50,10 @@ public class Jsweeper
 				super.setText("");
 				super.setIcon(mineImage);
 			}
+			else if(val == 0)
+			{
+				super.setText("");
+			}
 			else super.setText(Integer.toString(this.val));
 		}
 		public void incrementValue()
@@ -69,6 +65,13 @@ public class Jsweeper
 		
 		public boolean isMine() { return val == MINE; }
 		public void setMine(boolean mine) { setValue(mine?MINE:0); }
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
+			setEnabled(false);
+		}
 		
 		private int x, y;
 		private int val;
