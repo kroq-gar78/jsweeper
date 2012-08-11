@@ -59,11 +59,8 @@ public class Jsweeper
 		public boolean isMine() { return val == MINE; }
 		public void setMine(boolean mine) { setValue(mine?MINE:0); }
 		
-		@Override
-		public void actionPerformed(ActionEvent e)
+		public void clickCell()
 		{
-			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
-			
 			if(val == MINE)
 			{
 				super.setText("");
@@ -75,6 +72,13 @@ public class Jsweeper
 			}
 			else super.setText(Integer.toString(this.val));
 			setEnabled(false);
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
+			clickCell();
 		}
 		
 		private int x, y;
