@@ -1,6 +1,7 @@
 package org.kroqgar78.jsweeper;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 
@@ -18,6 +19,16 @@ public class Jsweeper
 			this.x = x;
 			this.y = y;
 			this.val = val;
+			
+			super.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					System.out.println("Button pressed at (" + getPosition()[0] + "," + getPosition()[1] + ")" );
+					setEnabled(false);
+				}
+			});
 		}
 		public Cell(int x, int y)
 		{
@@ -25,18 +36,18 @@ public class Jsweeper
 		}
 		
 		//public int getX() { return this.x; }
-		public void setX(int x) { this.x = x; }
+		//public void setX(int x) { this.x = x; }
 		
 		//public int getY() { return this.y; }
-		public void setY(int y) { this.y = y; }
+		//public void setY(int y) { this.y = y; }
 		
 		public int[] getPosition() { return new int[] {x, y}; }
-		public void setPosition(int x, int y)
+		/*public void setPosition(int x, int y)
 		{
 			this.x = x;
 			this.y = y;
 		}
-		public void setPosition(int[] pos) { setPosition(pos[0], pos[1]); }
+		public void setPosition(int[] pos) { setPosition(pos[0], pos[1]); }*/
 		
 		public int getValue() { return this.val; }
 		public void setValue(int val)
@@ -75,15 +86,19 @@ public class Jsweeper
 		Random rand = new Random(new java.util.GregorianCalendar().getTimeInMillis());
 		
 		int numMines = 10;
-		//JButton[][] buttons = new JButton[size[0]][size[1]]; // position is (dist from top, dist from left)
-		//boolean[][] mines = new boolean[size[0]][size[1]];
-		Cell[][] cells = new Cell[size[0]][size[1]];
-		//int[][] numbers = new int[size[0]][size[1]];
+		Cell[][] cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
 		for( int i = 0; i < cells.length; i++ )
 		{
 			for( int j = 0; j < cells[i].length; j++ )
 			{
 				cells[i][j] = new Cell(i, j);
+				/*cells[i][j].addActionListener( new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						cells[i][j].setEnabled(false);
+					}
+				});*/
 				contentPane.add(cells[i][j]);
 			}
 		}
