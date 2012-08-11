@@ -49,7 +49,12 @@ public class Jsweeper
 			}
 			else super.setText(Integer.toString(this.val));
 		}
-		public void incrementValue() { this.val++; super.setText(Integer.toString(this.val)); }
+		public void incrementValue()
+		{
+			if(isMine()) return; // don't do anything if it's a mine
+			this.val++;
+			super.setText(Integer.toString(this.val));
+		}
 		
 		public boolean isMine() { return val == MINE; }
 		public void setMine(boolean mine) { setValue(mine?MINE:0); }
@@ -99,22 +104,22 @@ public class Jsweeper
 			System.out.println("Placed mine at (" + x + "," + y + ")");
 		}
 		
-		// calculate values of the cells
+		// calculate values of the cells by iterating through mines and incrementing values around them
 		for( int i = 0; i < cells.length; i++ )
 		{
 			for( int j = 0; j < cells[i].length; j++ )
 			{
-				if(cells[i][j].isMine()) continue;
+				if(!cells[i][j].isMine()) continue;
 				
-				// check all cells surrounding the one in question (if it's not a mine itself)
-				if( i<(size[0]-1) && cells[i+1][j].isMine() ) cells[i][j].incrementValue(); //  below
-				if( j<(size[0]-1) && cells[i][j+1].isMine() ) cells[i][j].incrementValue(); // right
-				if( i<(size[0]-1) && j<(size[0]-1) && cells[i+1][j+1].isMine() ) cells[i][j].incrementValue(); // below & right
-				if( i>0 && cells[i-1][j].isMine() ) cells[i][j].incrementValue(); // above
-				if( i>0 && j<(size[0]-1) && cells[i-1][j+1].isMine() ) cells[i][j].incrementValue(); // above & right 
-				if( j>0 && cells[i][j-1].isMine() ) cells[i][j].incrementValue(); // left
-				if( i>0 && j>0 && cells[i-1][j-1].isMine() ) cells[i][j].incrementValue(); // above & left
-				if( i<(size[0]-1) && j>0 && cells[i+1][j-1].isMine() ) cells[i][j].incrementValue(); // down & left
+				// bump all cells' values around the mine; Cell.incrementValue() ignores command if cell is a mine
+				if( i<(size[0]-1) ) cells[i+1][j].incrementValue(); //  below
+				if( j<(size[0]-1) ) cells[i][j+1].incrementValue(); // right
+				if( i<(size[0]-1) && j<(size[0]-1) ) cells[i+1][j+1].incrementValue(); // below & right
+				if( i>0 ) cells[i-1][j].incrementValue(); // above
+				if( i>0 && j<(size[0]-1) ) cells[i-1][j+1].incrementValue(); // above & right 
+				if( j>0 ) cells[i][j-1].incrementValue(); // left
+				if( i>0 && j>0 ) cells[i-1][j-1].incrementValue(); // above & left
+				if( i<(size[0]-1) && j>0 ) cells[i+1][j-1].incrementValue(); // down & left
 			}
 		}
 		
