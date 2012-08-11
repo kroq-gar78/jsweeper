@@ -65,19 +65,20 @@ public class Jsweeper
 		{
 			setEnabled(false);
 			super.setIcon(null);
-			super.setText("");
 			clicked = true;
 			flagged = false;
 			if(val == MINE)
 			{
+				super.setText("");
 				super.setIcon(mineImage);
 			}
 			else if(val == EMPTY)
 			{
+				super.setText("");
 				Cell[] adjCells = inst.getAdjacentCells(x, y);
 				for( int i = 0; i < adjCells.length; i++ )
 				{
-					if( adjCells[i].getValue() >= 0 && adjCells[i].isEnabled() ) adjCells[i].clickCell();
+					if( adjCells[i].getValue() >= 0 && !adjCells[i].clicked ) adjCells[i].clickCell();
 				}
 			}
 			else super.setText(Integer.toString(this.val));
@@ -115,23 +116,29 @@ public class Jsweeper
 		public void mouseEntered(MouseEvent arg0)
 		{
 			containsMouse = true;
+			//getModel().setArmed(pressed);
+			//getModel().setPressed(pressed);
 		}
 		@Override
 		public void mouseExited(MouseEvent arg0)
 		{
 			containsMouse = false;
+			//getModel().setArmed(true);
+			//getModel().setPressed(false);
 		}
 		@Override
 		public void mousePressed(MouseEvent arg0)
 		{
-			//getModel().setArmed(true);
-			//getModel().setPressed(true);
+			pressed = true;
+			//getModel().setArmed(pressed);
+			//getModel().setPressed(pressed);
 		}
 		@Override
 		public void mouseReleased(MouseEvent arg0)
 		{
-			//getModel().setArmed(false);
-			//getModel().setPressed(false);
+			pressed = false;
+			//getModel().setArmed(pressed);
+			//getModel().setPressed(pressed);
 			if(!containsMouse) return;
 			System.out.println(clicked);
 			System.out.println("Button pressed at (" + x + "," + y + ")" );
@@ -140,7 +147,7 @@ public class Jsweeper
 			System.out.println(clicked);
 		}
 		
-		private boolean containsMouse, clicked, flagged = false;
+		boolean containsMouse, clicked, flagged, pressed = false;
 		private int x, y;
 		private int val;
 	}
@@ -165,34 +172,8 @@ public class Jsweeper
 		rand = new Random(System.currentTimeMillis());
 		
 		this.numMines = numMines;
-		cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
-		for( int i = 0; i < cells.length; i++ )
-		{
-			for( int j = 0; j < cells[i].length; j++ )
-			{
-				cells[i][j] = new Cell(i, j);
-				cells[i][j].setPreferredSize(new Dimension(42, 32));
-				contentPane.add(cells[i][j]);
-			}
-		}
 		
-		// place mines
-		for( int i = 0; i < numMines; i++ )
-		{
-			// keep generating random positions until it finds one that isn't a mine
-			int x, y;
-			do
-			{
-				x = rand.nextInt(cells.length);
-				y = rand.nextInt(cells[0].length);
-			}
-			while(cells[x][y].isMine());
-			
-			cells[x][y].setMine(true);
-			System.out.println("Placed mine at (" + x + "," + y + ")");
-		}
-		
-		this.recountCells();
+		generateField();
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -232,6 +213,55 @@ public class Jsweeper
 		if( x<(size[0]-1) && y>0 ) cellTmp.add(cells[x+1][y-1]); // down & left
 		
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
+	}
+	
+	public void generateField()
+	{
+		Container contentPane = frame.getContentPane();
+		cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
+		for( int i = 0; i < cells.length; i++ )
+		{
+			for( int j = 0; j < cells[i].length; j++ )
+			{
+				if(cells[i][j] != null) contentPane.remove(cells[i][j]); // remove old buttons if regenerating
+				cells[i][j] = new Cell(i, j);
+				cells[i][j].setPreferredSize(new Dimension(42, 32));
+				contentPane.add(cells[i][j]);
+			}
+		}
+		
+		// place mines
+		for( int i = 0; i < numMines; i++ )
+		{
+			// keep generating random positions until it finds one that isn't a mine
+			int x, y;
+			do
+			{
+				x = rand.nextInt(cells.length);
+				y = rand.nextInt(cells[0].length);
+			}
+			while(cells[x][y].isMine());
+			
+			cells[x][y].setMine(true);
+			System.out.println("Placed mine at (" + x + "," + y + ")");
+		}
+		
+		recountCells();
+	}
+	
+	public void gameOver()
+	{
+		
+	}
+	
+	public void gameWin()
+	{
+		
+	}
+	
+	public void update()
+	{
+		
 	}
 	
 	public static void main(String[] args)
