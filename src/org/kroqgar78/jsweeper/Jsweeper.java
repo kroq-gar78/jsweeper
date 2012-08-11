@@ -12,6 +12,7 @@ public class Jsweeper
 	
 	public static class Cell extends JButton implements ActionListener
 	{
+		public static final int EMPTY = 0;
 		public static final int MINE = -1;
 		
 		public Cell(int x, int y, int val)
@@ -25,7 +26,7 @@ public class Jsweeper
 		}
 		public Cell(int x, int y)
 		{
-			this(x, y, 0);
+			this(x, y, EMPTY);
 		}
 		
 		//public int getX() { return this.x; }
@@ -57,21 +58,26 @@ public class Jsweeper
 		}
 		
 		public boolean isMine() { return val == MINE; }
-		public void setMine(boolean mine) { setValue(mine?MINE:0); }
+		public void setMine(boolean mine) { setValue(mine?MINE:EMPTY); }
 		
 		public void clickCell()
 		{
+			setEnabled(false);
 			if(val == MINE)
 			{
 				super.setText("");
 				super.setIcon(mineImage);
 			}
-			else if(val == 0)
+			else if(val == EMPTY)
 			{
 				super.setText("");
+				Cell[] adjCells = inst.getAdjacentCells(x, y);
+				for( int i = 0; i < adjCells.length; i++ )
+				{
+					if( adjCells[i].getValue() >= 0 && adjCells[i].isEnabled() ) adjCells[i].clickCell();
+				}
 			}
 			else super.setText(Integer.toString(this.val));
-			setEnabled(false);
 		}
 		
 		@Override
@@ -111,6 +117,7 @@ public class Jsweeper
 			for( int j = 0; j < cells[i].length; j++ )
 			{
 				cells[i][j] = new Cell(i, j);
+				cells[i][j].setPreferredSize(new Dimension(48, 48));
 				contentPane.add(cells[i][j]);
 			}
 		}
@@ -175,6 +182,6 @@ public class Jsweeper
 	
 	public static void main(String[] args)
 	{
-		inst = new Jsweeper(8, 8, 10);
+		inst = new Jsweeper(16, 16, 40);
 	}
 }
