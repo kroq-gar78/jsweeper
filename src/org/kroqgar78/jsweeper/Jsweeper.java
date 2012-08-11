@@ -67,6 +67,7 @@ public class Jsweeper
 			super.setIcon(null);
 			super.setText("");
 			clicked = true;
+			flagged = false;
 			if(val == MINE)
 			{
 				super.setIcon(mineImage);
@@ -84,7 +85,24 @@ public class Jsweeper
 		
 		public void flagCell()
 		{
+			clicked = false;
+			flagged = true;
+			super.setText("");
 			super.setIcon(flagImage);
+		}
+		
+		public void unflagCell()
+		{
+			clicked = false;
+			flagged = false;
+			super.setText("");
+			super.setIcon(null);
+		}
+		
+		public void toggleFlag()
+		{
+			if(!flagged) flagCell();
+			else unflagCell();
 		}
 
 		@Override
@@ -117,12 +135,12 @@ public class Jsweeper
 			if(!containsMouse) return;
 			System.out.println(clicked);
 			System.out.println("Button pressed at (" + x + "," + y + ")" );
-			if(arg0.getButton() == MouseEvent.BUTTON1) clickCell();
-			if(arg0.getButton() == MouseEvent.BUTTON3 && !clicked) flagCell();
+			if(arg0.getButton() == MouseEvent.BUTTON1 && !flagged) clickCell();
+			if(arg0.getButton() == MouseEvent.BUTTON3 && !clicked) toggleFlag();
 			System.out.println(clicked);
 		}
 		
-		private boolean containsMouse, clicked = false;
+		private boolean containsMouse, clicked, flagged = false;
 		private int x, y;
 		private int val;
 	}
