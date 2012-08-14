@@ -71,6 +71,7 @@ public class Jsweeper
 			{
 				super.setText("");
 				super.setIcon(mineImage);
+				Jsweeper.inst.gameOver();
 			}
 			else if(val == EMPTY)
 			{
@@ -107,11 +108,8 @@ public class Jsweeper
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent arg0)
-		{
-			// TODO Auto-generated method stub
-			
-		}
+		public void mouseClicked(MouseEvent arg0) {}
+		
 		@Override
 		public void mouseEntered(MouseEvent arg0)
 		{
@@ -251,6 +249,7 @@ public class Jsweeper
 	
 	public void gameOver()
 	{
+		JOptionPane.showMessageDialog(frame, "Game Over!!!\n... and you suck", "GAME OVER", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
 	
