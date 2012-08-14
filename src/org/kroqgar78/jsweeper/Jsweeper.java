@@ -2,6 +2,7 @@ package org.kroqgar78.jsweeper;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -206,7 +207,6 @@ public class Jsweeper
 		frame = new JFrame("Jsweeper");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Container contentPane = frame.getContentPane();
 		size = new int[] {height,width}; // dimensions of the field; rows by columns
 		
 		rand = new Random(System.currentTimeMillis());
@@ -214,6 +214,23 @@ public class Jsweeper
 		this.numMines = numMines;
 		
 		generateField();
+		
+		JMenuBar menubar = new JMenuBar();
+		JMenu menu = new JMenu("JSweeper");
+		JMenuItem startItem = new JMenuItem("Start over");
+		startItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				restartGame();
+			}
+		});
+		
+		menu.add(startItem);
+		menubar.add(menu);
+		
+		frame.setJMenuBar(menubar);
 		
 		frame.pack();
 		frame.setVisible(true);
@@ -291,16 +308,21 @@ public class Jsweeper
 		recountCells();
 	}
 	
+	public void restartGame()
+	{
+		generateField();
+		frame.setVisible(false);
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
 	public void gameOver()
 	{
 		//JOptionPane.showMessageDialog(frame, "", "GAME OVER", JOptionPane.INFORMATION_MESSAGE);
 		int userOption = JOptionPane.showConfirmDialog(frame, "Game Over!!!\nWould you like to play again?\n... you suck btw");
 		if(userOption == JOptionPane.YES_OPTION)
 		{
-			generateField();
-			frame.setVisible(false);
-			frame.pack();
-			frame.setVisible(true);
+			restartGame();
 		}
 	}
 	
