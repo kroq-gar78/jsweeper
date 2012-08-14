@@ -208,7 +208,6 @@ public class Jsweeper
 		
 		Container contentPane = frame.getContentPane();
 		size = new int[] {height,width}; // dimensions of the field; rows by columns
-		contentPane.setLayout(new GridLayout(size[0], size[1]));
 		
 		rand = new Random(System.currentTimeMillis());
 		
@@ -259,12 +258,14 @@ public class Jsweeper
 	public void generateField()
 	{
 		Container contentPane = frame.getContentPane();
+		contentPane.removeAll(); // wipe the content pane just in case it already had stuff
+		contentPane.setLayout(new GridLayout(size[0], size[1]));
 		cells = new Cell[size[0]][size[1]]; // position is (dist from top, dist from left)
 		for( int i = 0; i < cells.length; i++ )
 		{
 			for( int j = 0; j < cells[i].length; j++ )
 			{
-				if(cells[i][j] != null) contentPane.remove(cells[i][j]); // remove old buttons if regenerating
+				//if(cells[i][j] != null) contentPane.remove(cells[i][j]); // remove old buttons if regenerating
 				cells[i][j] = new Cell(i, j);
 				cells[i][j].setPreferredSize(new Dimension(42, 32));
 				contentPane.add(cells[i][j]);
@@ -292,8 +293,15 @@ public class Jsweeper
 	
 	public void gameOver()
 	{
-		JOptionPane.showMessageDialog(frame, "Game Over!!!\n... and you suck", "GAME OVER", JOptionPane.INFORMATION_MESSAGE);
-		
+		//JOptionPane.showMessageDialog(frame, "", "GAME OVER", JOptionPane.INFORMATION_MESSAGE);
+		int userOption = JOptionPane.showConfirmDialog(frame, "Game Over!!!\nWould you like to play again?\n... you suck btw");
+		if(userOption == JOptionPane.YES_OPTION)
+		{
+			generateField();
+			frame.setVisible(false);
+			frame.pack();
+			frame.setVisible(true);
+		}
 	}
 	
 	public void gameWin()
