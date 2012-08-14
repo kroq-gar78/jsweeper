@@ -65,24 +65,29 @@ public class Jsweeper
 		{
 			setEnabled(false);
 			super.setIcon(null);
-			clicked = true;
 			flagged = false;
-			if(val == MINE)
+			
+			if(!clicked)
 			{
-				super.setText("");
-				super.setIcon(mineImage);
-				Jsweeper.inst.gameOver();
-			}
-			else if(val == EMPTY)
-			{
-				super.setText("");
-				Cell[] adjCells = inst.getAdjacentCells(x, y);
-				for( int i = 0; i < adjCells.length; i++ )
+				clicked = true;
+				if(val == MINE)
 				{
-					if( adjCells[i].getValue() >= 0 && !adjCells[i].clicked ) adjCells[i].clickCell();
+					super.setText("");
+					super.setIcon(mineImage);
+					Jsweeper.inst.gameOver();
 				}
+				else if(val == EMPTY)
+				{
+					super.setText("");
+					Cell[] adjCells = inst.getAdjacentCells(x, y);
+					for( int i = 0; i < adjCells.length; i++ )
+					{
+						if( adjCells[i].getValue() >= 0 && !adjCells[i].clicked ) adjCells[i].clickCell();
+					}
+				}
+				else super.setText(Integer.toString(this.val));
 			}
-			else super.setText(Integer.toString(this.val));
+			
 		}
 		
 		public void flagCell()
@@ -128,6 +133,16 @@ public class Jsweeper
 		public void mousePressed(MouseEvent arg0)
 		{
 			pressed = true;
+			if(clicked) // highlight other adjacent cells if already clicked
+			{
+				Cell[] adjCells = inst.getAdjacentCells(x, y);
+				for( int i = 0; i < adjCells.length; i++ )
+				{
+					if(adjCells[i].flagged) continue;
+					adjCells[i].getModel().setArmed(true);
+					adjCells[i].getModel().setPressed(true);
+				}
+			}
 			//getModel().setArmed(pressed);
 			//getModel().setPressed(pressed);
 		}
@@ -137,12 +152,40 @@ public class Jsweeper
 			pressed = false;
 			//getModel().setArmed(pressed);
 			//getModel().setPressed(pressed);
-			if(!containsMouse) return;
-			System.out.println(clicked);
-			System.out.println("Button pressed at (" + x + "," + y + ")" );
-			if(arg0.getButton() == MouseEvent.BUTTON1 && !flagged) clickCell();
-			if(arg0.getButton() == MouseEvent.BUTTON3 && !clicked) toggleFlag();
-			System.out.println(clicked);
+			if(clicked) // highlight other adjacent cells if already clicked
+			{
+				Cell[] adjCells = inst.getAdjacentCells(x, y);
+				for( int i = 0; i < adjCells.length; i++ )
+				{
+					adjCells[i].getModel().setArmed(false);
+					adjCells[i].getModel().setPressed(false);
+				}
+				if(containsMouse)
+				{
+					int adjFlagCount = 0;
+					for( int i = 0; i < adjCells.length; i++ )
+					{
+						if( adjCells[i].flagged ) adjFlagCount++;
+					}
+					if(adjFlagCount == this.val)
+					{
+						for( int i = 0; i < adjCells.length; i++ )
+						{
+							if(adjCells[i].flagged) continue;
+							adjCells[i].clickCell();
+						}
+					}
+				}
+			}
+			else
+			{
+				if(!containsMouse) return;
+				System.out.println(clicked);
+				System.out.println("Button pressed at (" + x + "," + y + ")" );
+				if(arg0.getButton() == MouseEvent.BUTTON1 && !flagged) clickCell();
+				if(arg0.getButton() == MouseEvent.BUTTON3 && !clicked) toggleFlag();
+				System.out.println(clicked);
+			}
 		}
 		
 		boolean containsMouse, clicked, flagged, pressed = false;
