@@ -322,6 +322,11 @@ public class Jsweeper
 		{
 			restartGame();
 		}
+		else if(userOption == JOptionPane.NO_OPTION)
+		{
+			this.frame.setVisible(false);
+			System.exit(0);
+		}
 	}
 	
 	public void gameWin()
@@ -330,6 +335,11 @@ public class Jsweeper
 		if(userOption == JOptionPane.YES_OPTION)
 		{
 			restartGame();
+		}
+		else if(userOption == JOptionPane.NO_OPTION)
+		{
+			this.frame.setVisible(false);
+			System.exit(0);
 		}
 	}
 	
