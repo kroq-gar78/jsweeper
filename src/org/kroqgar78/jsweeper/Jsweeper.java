@@ -2,7 +2,6 @@ package org.kroqgar78.jsweeper;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -231,7 +230,7 @@ public class Jsweeper
 		menubar.add(menu);
 		
 		frame.setJMenuBar(menubar);
-		
+				
 		frame.pack();
 		frame.setVisible(true);
 	}
