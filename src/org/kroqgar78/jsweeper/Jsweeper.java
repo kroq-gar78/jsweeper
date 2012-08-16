@@ -87,8 +87,8 @@ public class Jsweeper
 					}
 				}
 				else super.setText(Integer.toString(this.val));
+				inst.update();
 			}
-			
 		}
 		
 		public void flagCell()
@@ -326,12 +326,34 @@ public class Jsweeper
 	
 	public void gameWin()
 	{
-		
+		int userOption = JOptionPane.showConfirmDialog(frame, "Good job. You won.\n... you still suck btw");
+		if(userOption == JOptionPane.YES_OPTION)
+		{
+			restartGame();
+		}
 	}
 	
 	public void update()
 	{
-		
+		// victory conditions: all non-mine cells are clicked
+		// iterate through all non-mine cells to see if the conditions are true
+		boolean allClicked = true;
+		for( int i = 0; i < cells.length; i++ )
+		{
+			for( int j = 0; j < cells[i].length; j++ )
+			{
+				
+				if( !cells[i][j].clicked && !cells[i][j].isMine() )
+				{
+					allClicked = false;
+					break;
+				}
+			}
+		}
+		if(allClicked)
+		{
+			gameWin();
+		}
 	}
 	
 	public static void main(String[] args)
