@@ -73,7 +73,7 @@ public class Cell extends JButton implements MouseListener
 			{
 				super.setText("");
 				super.setIcon(mineImage);
-				Jsweeper.inst.gameOver();
+				inst.gameOver();
 			}
 			else if(val == EMPTY)
 			{

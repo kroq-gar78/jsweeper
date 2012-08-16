@@ -8,7 +8,6 @@ import javax.swing.*;
 
 public class Jsweeper
 {
-	static Jsweeper inst;
 	
 	private JFrame frame;
 	private int[] size;
@@ -188,6 +187,6 @@ public class Jsweeper
 	
 	public static void main(String[] args)
 	{
-		inst = new Jsweeper(16, 16, 40);
+		Jsweeper inst = new Jsweeper(16, 16, 40);
 	}
 }
