@@ -86,6 +86,12 @@ public class Jsweeper
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
+	public JFrame getFrame() { return this.frame; }
+	
+	public int[] getSize() { return this.size; }
+	
+	public int getNumMines() { return this.numMines; }
+	
 	public void generateField()
 	{
 		Container contentPane = frame.getContentPane();
