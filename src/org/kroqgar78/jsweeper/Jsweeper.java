@@ -85,6 +85,11 @@ public class Jsweeper
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
+	public Cell getRandomCell()
+	{
+		return getCells()[rand.nextInt(getSize()[0])][rand.nextInt(getSize()[1])];
+	}
+	
 	public boolean isAnyCellClicked()
 	{
 		for( int i = 0; i < getSize()[0]; i++ )

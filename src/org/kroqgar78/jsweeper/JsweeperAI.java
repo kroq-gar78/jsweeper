@@ -16,15 +16,7 @@ public class JsweeperAI
 		// check if any cells are clicked at all; else, click a random one
 		if(!inst.isAnyCellClicked())
 		{
-			int x = rand.nextInt(inst.getSize()[0]);
-			int y = rand.nextInt(inst.getSize()[1]);
-			/*do
-			{
-				x = rand.nextInt(inst.getSize()[0]);
-				y = rand.nextInt(inst.getSize()[1]);
-			}
-			while(!inst.getCells()[x][y].isMine());*/
-			inst.getCells()[x][y].clickCell();
+			inst.getRandomCell().clickCell();
 		}
 	}
 	
