@@ -68,9 +68,14 @@ public class Cell extends JButton implements MouseListener
 		
 		if(!clicked)
 		{
-			clicked = true;
 			if(val == MINE)
 			{
+				// if no cells have been clicked yet, then regenerate the field
+				if(!inst.isAnyCellClicked())
+				{
+					inst.restartGame();
+					return;
+				}
 				super.setText("");
 				super.setIcon(mineImage);
 				inst.gameOver();
@@ -85,6 +90,7 @@ public class Cell extends JButton implements MouseListener
 				}
 			}
 			else super.setText(Integer.toString(this.val));
+			clicked = true;
 			inst.update();
 		}
 	}
