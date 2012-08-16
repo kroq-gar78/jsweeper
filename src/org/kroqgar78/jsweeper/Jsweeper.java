@@ -85,6 +85,19 @@ public class Jsweeper
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
+	public boolean isAnyCellClicked()
+	{
+		for( int i = 0; i < getSize()[0]; i++ )
+		{
+			for( int j = 0; j < getSize()[1]; j++ )
+			{
+				if( getCells()[i][j].clicked ) return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public JFrame getFrame() { return this.frame; }
 	
 	public int[] getSize() { return this.size; }
