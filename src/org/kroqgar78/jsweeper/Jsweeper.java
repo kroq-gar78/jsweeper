@@ -311,9 +311,7 @@ public class Jsweeper
 	public void restartGame()
 	{
 		generateField();
-		frame.setVisible(false);
 		frame.pack();
-		frame.setVisible(true);
 	}
 	
 	public void gameOver()
