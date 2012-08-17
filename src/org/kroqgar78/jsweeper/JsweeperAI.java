@@ -18,6 +18,18 @@ public class JsweeperAI
 		{
 			inst.getRandomCell().clickCell();
 		}
+		else
+		{
+			Cell[] clickedCells = inst.getClickedCells();
+			
+			for( int i = 0; i < clickedCells.length; i++ )
+			{
+				if(inst.getAdjacentFlagCount(clickedCells[i].getPosition()[0], clickedCells[i].getPosition()[1]) == clickedCells[i].getValue())
+				{
+					clickedCells[i].clickCell();
+				}
+			}
+		}
 	}
 	
 	private Jsweeper inst;
@@ -28,5 +40,6 @@ public class JsweeperAI
 		Jsweeper inst = new Jsweeper(16, 16, 40);
 		JsweeperAI ai = new JsweeperAI(inst);
 		ai.doStep();
+		while(true) ai.doStep();
 	}
 }

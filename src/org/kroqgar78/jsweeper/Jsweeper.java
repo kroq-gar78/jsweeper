@@ -85,6 +85,32 @@ public class Jsweeper
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
+	public int getAdjacentFlagCount(int x, int y)
+	{
+		int count = 0;
+		Cell[] adjCells = getAdjacentCells(x,y);
+		for( int i = 0; i < adjCells.length; i++ )
+		{
+			if(adjCells[i].flagged) count++;
+		}
+		return count;
+	}
+	
+	public Cell[] getClickedCells()
+	{
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>();
+		
+		for( int i = 0; i < cells.length; i++ )
+		{
+			for( int j = 0; j < cells[i].length; j++ )
+			{
+				if(cells[i][j].clicked) cellTmp.add(cells[i][j]);
+			}
+		}
+		
+		return cellTmp.toArray(new Cell[cellTmp.size()]);
+	}
+	
 	public Cell getRandomCell()
 	{
 		return getCells()[rand.nextInt(getSize()[0])][rand.nextInt(getSize()[1])];

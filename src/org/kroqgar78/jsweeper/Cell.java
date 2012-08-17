@@ -169,12 +169,7 @@ public class Cell extends JButton implements MouseListener
 			}
 			if(containsMouse)
 			{
-				int adjFlagCount = 0;
-				for( int i = 0; i < adjCells.length; i++ )
-				{
-					if( adjCells[i].flagged ) adjFlagCount++;
-				}
-				if(adjFlagCount == this.val)
+				if(inst.getAdjacentFlagCount(x, y) == this.val)
 				{
 					for( int i = 0; i < adjCells.length; i++ )
 					{
