@@ -141,9 +141,9 @@ public class Jsweeper
 	public static ArrayList<Cell> getClickedCells(ArrayList<Cell> orig)
 	{
 		ArrayList<Cell> cellTmp = new ArrayList<Cell>(orig);
-		for(int i = 0; i < cellTmp.size(); i++ )
+		for( Cell tmp : orig )
 		{
-			if(!cellTmp.get(i).clicked) cellTmp.remove(i);
+			if(tmp.clicked) cellTmp.add(tmp);
 		}
 		return cellTmp;
 	}
@@ -170,10 +170,10 @@ public class Jsweeper
 	 */
 	public static ArrayList<Cell> getUnclickedCells(ArrayList<Cell> orig)
 	{
-		ArrayList<Cell> cellTmp = new ArrayList<Cell>(orig);
-		for(int i = 0; i < cellTmp.size(); i++ )
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>();
+		for( Cell tmp : orig )
 		{
-			if(cellTmp.get(i).clicked) cellTmp.remove(i);
+			if(!tmp.clicked) cellTmp.add(tmp);
 		}
 		return cellTmp;
 	}
