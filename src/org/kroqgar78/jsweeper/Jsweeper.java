@@ -3,6 +3,7 @@ package org.kroqgar78.jsweeper;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import javax.swing.*;
 
@@ -108,6 +109,40 @@ public class Jsweeper
 			}
 		}
 		
+		return cellTmp.toArray(new Cell[cellTmp.size()]);
+	}
+	
+	/**
+	 * Return only the clicked cells in an array.
+	 * This is the opposite of getUnclickedCells(orig).
+	 * 
+	 * @param orig The original array of cells
+	 * @return all clicked cells in orig[]
+	 */
+	public Cell[] getClickedCells(Cell[] orig)
+	{
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>(java.util.Arrays.asList(orig));
+		for(int i = 0; i < cellTmp.size(); i++ )
+		{
+			if(!cellTmp.get(i).clicked) cellTmp.remove(i);
+		}
+		return cellTmp.toArray(new Cell[cellTmp.size()]);
+	}
+	
+	/**
+	 * Return only the unclicked cells in an array.
+	 * This is the opposite of getClickedCells(orig).
+	 * 
+	 * @param orig The original array of cells
+	 * @return all unclicked cells in orig[]
+	 */
+	public Cell[] getUnclickedCells(Cell[] orig)
+	{
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>(java.util.Arrays.asList(orig));
+		for(int i = 0; i < cellTmp.size(); i++ )
+		{
+			if(cellTmp.get(i).clicked) cellTmp.remove(i);
+		}
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
