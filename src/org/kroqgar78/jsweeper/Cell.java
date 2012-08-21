@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class Cell extends JButton implements MouseListener
+public class Cell extends JButton implements MouseListener, Cloneable
 {
 	public static ImageIcon mineImage = new ImageIcon("res/mine.png");
 	public static ImageIcon flagImage = new ImageIcon("res/flag.png");
@@ -27,6 +27,16 @@ public class Cell extends JButton implements MouseListener
 	public Cell(int x, int y, Jsweeper instance)
 	{
 		this(x, y, EMPTY, instance);
+	}
+	public Cell(Cell orig) // copy constructor
+	{
+		this.x = orig.x;
+		this.val = orig.val;
+		this.inst = orig.inst;
+		this.containsMouse = orig.containsMouse;
+		this.clicked = orig.clicked;
+		this.flagged = orig.flagged;
+		this.pressed = orig.pressed;
 	}
 	
 	//public int getX() { return this.x; }
@@ -76,6 +86,8 @@ public class Cell extends JButton implements MouseListener
 				if(!inst.isAnyCellClicked())
 				{
 					inst.restartGame();
+					inst.getCells()[this.x][this.y].clickCell();
+					//this.clickCell();
 					return;
 				}
 				clicked = true;
