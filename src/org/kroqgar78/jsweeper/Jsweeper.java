@@ -140,7 +140,7 @@ public class Jsweeper
 	 */
 	public static ArrayList<Cell> getClickedCells(ArrayList<Cell> orig)
 	{
-		ArrayList<Cell> cellTmp = new ArrayList<Cell>(orig);
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>();
 		for( Cell tmp : orig )
 		{
 			if(tmp.clicked) cellTmp.add(tmp);
