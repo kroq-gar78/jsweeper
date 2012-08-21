@@ -11,25 +11,47 @@ public class JsweeperAI
 		rand = new Random(System.currentTimeMillis());
 	}
 	
-	public void doStep()
+	public boolean doStep()
 	{
-		// check if any cells are clicked at all; else, click a random one
-		if(!inst.isAnyCellClicked())
+		if(inst.isAnyCellClicked())
 		{
-			inst.getRandomCell().clickCell();
+			Cell[] clickedCells = inst.getClickedCells();
+			// do some checks on clicked cells
+			for( int i = 0; i < clickedCells.length; i++ )
+			{
+				if(clickedCells[i].getValue() == Cell.EMPTY) continue;
+				int x = clickedCells[i].getPosition()[0];
+				int y = clickedCells[i].getPosition()[1];
+				System.out.println(i+" at ("+x+","+y+")");
+				// click if enough flags are present
+				if(inst.getAdjacentFlagCount(x, y) == clickedCells[i].getValue())
+				{
+					clickedCells[i].clickCell();
+					return true;
+				}
+				// flag if there are enough adjacent cells
+				Cell[] unclickedCells = Jsweeper.getUnclickedCells(inst.getAdjacentCells(x, y));
+				if(unclickedCells.length == clickedCells[i].getValue())
+				{
+					for( int j = 0; j < unclickedCells.length; j++ )
+					{
+						unclickedCells[j].flagCell();
+					}
+					return true;
+				}
+			}
+			
 		}
 		else
 		{
-			Cell[] clickedCells = inst.getClickedCells();
-			
-			for( int i = 0; i < clickedCells.length; i++ )
-			{
-				if(inst.getAdjacentFlagCount(clickedCells[i].getPosition()[0], clickedCells[i].getPosition()[1]) == clickedCells[i].getValue())
-				{
-					clickedCells[i].clickCell();
-				}
-			}
+			Cell randCell = inst.getRandomCell();
+			int x = randCell.getPosition()[0];
+			int y = randCell.getPosition()[1];
+			System.out.println("Random cell is mine");
+			inst.getRandomCell().clickCell();
+			System.out.println("Click random cell at ("+x+","+y+")");
 		}
+		return false;
 	}
 	
 	private Jsweeper inst;
@@ -40,6 +62,6 @@ public class JsweeperAI
 		Jsweeper inst = new Jsweeper(16, 16, 40);
 		JsweeperAI ai = new JsweeperAI(inst);
 		ai.doStep();
-		while(true) ai.doStep();
+		while(ai.doStep());
 	}
 }
