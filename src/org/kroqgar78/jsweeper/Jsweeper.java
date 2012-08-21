@@ -113,6 +113,23 @@ public class Jsweeper
 	}
 	
 	/**
+	 * Return only the clicked cells in an ArrayList.
+	 * This is the opposite of getUnclickedCells(orig).
+	 * 
+	 * @param orig The original ArrayList of cells
+	 * @return all clicked cells in ArrayList orig
+	 */
+	public ArrayList<Cell> getClickedCells(ArrayList<Cell> orig)
+	{
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>(orig);
+		for(int i = 0; i < cellTmp.size(); i++ )
+		{
+			if(!cellTmp.get(i).clicked) cellTmp.remove(i);
+		}
+		return cellTmp;
+	}
+	
+	/**
 	 * Return only the clicked cells in an array.
 	 * This is the opposite of getUnclickedCells(orig).
 	 * 
@@ -121,12 +138,25 @@ public class Jsweeper
 	 */
 	public Cell[] getClickedCells(Cell[] orig)
 	{
-		ArrayList<Cell> cellTmp = new ArrayList<Cell>(java.util.Arrays.asList(orig));
+		ArrayList<Cell> cellTmp = getClickedCells(new ArrayList<Cell>(java.util.Arrays.asList(orig)));
+		return cellTmp.toArray(new Cell[cellTmp.size()]);
+	}
+	
+	/**
+	 * Return only the unclicked cells in an array.
+	 * This is the opposite of getClickedCells(orig).
+	 * 
+	 * @param orig The original array of cells
+	 * @return all unclicked cells in orig[]
+	 */
+	public ArrayList<Cell> getUnclickedCells(ArrayList<Cell> orig)
+	{
+		ArrayList<Cell> cellTmp = new ArrayList<Cell>(orig);
 		for(int i = 0; i < cellTmp.size(); i++ )
 		{
-			if(!cellTmp.get(i).clicked) cellTmp.remove(i);
+			if(cellTmp.get(i).clicked) cellTmp.remove(i);
 		}
-		return cellTmp.toArray(new Cell[cellTmp.size()]);
+		return cellTmp;
 	}
 	
 	/**
@@ -138,11 +168,7 @@ public class Jsweeper
 	 */
 	public Cell[] getUnclickedCells(Cell[] orig)
 	{
-		ArrayList<Cell> cellTmp = new ArrayList<Cell>(java.util.Arrays.asList(orig));
-		for(int i = 0; i < cellTmp.size(); i++ )
-		{
-			if(cellTmp.get(i).clicked) cellTmp.remove(i);
-		}
+		ArrayList<Cell> cellTmp = getUnclickedCells(new ArrayList<Cell>(java.util.Arrays.asList(orig)));
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
