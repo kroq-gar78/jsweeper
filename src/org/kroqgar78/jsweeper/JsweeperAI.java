@@ -23,14 +23,19 @@ public class JsweeperAI
 				int x = clickedCells[i].getPosition()[0];
 				int y = clickedCells[i].getPosition()[1];
 				System.out.println(i+" at ("+x+","+y+")");
+				Cell[] adjCells = inst.getAdjacentCells(x, y);
+				Cell[] unclickedCells = Jsweeper.getUnclickedCells(adjCells);
 				// click if enough flags are present
 				if(inst.getAdjacentFlagCount(x, y) == clickedCells[i].getValue())
 				{
-					clickedCells[i].clickCell();
+					for( int j = 0; j < unclickedCells.length; j++ )
+					{
+						if(unclickedCells[j].flagged) continue;
+						unclickedCells[j].clickCell();
+					}
 					return true;
 				}
 				// flag if there are enough adjacent cells
-				Cell[] unclickedCells = Jsweeper.getUnclickedCells(inst.getAdjacentCells(x, y));
 				if(unclickedCells.length == clickedCells[i].getValue())
 				{
 					for( int j = 0; j < unclickedCells.length; j++ )
