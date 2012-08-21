@@ -70,6 +70,13 @@ public class Jsweeper
 	
 	public Cell[][] getCells() { return this.cells; }
 	
+	/**
+	 * Get the cells adjacent to cell (x,y)
+	 * 
+	 * @param x The distance from the top
+	 * @param y The distance from the left
+	 * @return All cells adjacent to (x,y)
+	 */
 	public Cell[] getAdjacentCells(int x, int y)
 	{
 		ArrayList<Cell> cellTmp = new ArrayList<Cell>();
@@ -86,6 +93,13 @@ public class Jsweeper
 		return cellTmp.toArray(new Cell[cellTmp.size()]);
 	}
 	
+	/**
+	 * Get the number of flags adjacent to cell (x,y)
+	 * 
+	 * @param x The distance from the top
+	 * @param y The distance from the left
+	 * @return The number of adjacent flags
+	 */
 	public int getAdjacentFlagCount(int x, int y)
 	{
 		int count = 0;
@@ -97,6 +111,11 @@ public class Jsweeper
 		return count;
 	}
 	
+	/**
+	 * Get all clicked cells in the field
+	 * 
+	 * @return All clicked cells in an array
+	 */
 	public Cell[] getClickedCells()
 	{
 		ArrayList<Cell> cellTmp = new ArrayList<Cell>();

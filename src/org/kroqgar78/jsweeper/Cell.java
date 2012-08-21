@@ -93,7 +93,7 @@ public class Cell extends JButton implements MouseListener
 				}
 			}
 			else super.setText(Integer.toString(this.val));
-			inst.update();
+			inst.update(); // update the instance (e.g. for victory)
 		}
 	}
 	
